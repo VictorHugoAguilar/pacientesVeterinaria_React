@@ -3,25 +3,25 @@ import React, { Component } from "react";
 class NuevaCita extends Component {
     state = {
         cita: {
-            mascota : '',
-            propietario: '',
-            fecha: '',
-            hora: '',
-            sintomas: ''
+            mascota: "",
+            propietario: "",
+            fecha: "",
+            hora: "",
+            sintomas: ""
         }
     };
 
     handleChange = e => {
-        console.log(e.target.name + ':' + e.target.value);
+        console.log(e.target.name + ":" + e.target.value);
         // colocar lo que el usuario escribe en el state
 
         this.setState({
             cita: {
                 ...this.state.cita,
-                [e.target.name] : e.target.value
+                [e.target.name]: e.target.value
             }
         });
-    }
+    };
     render() {
         return (
             <div className="card mt-5 py-5">
