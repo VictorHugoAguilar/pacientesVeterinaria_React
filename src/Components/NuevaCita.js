@@ -1,16 +1,22 @@
 import React, { Component } from "react";
+import uuid from 'uuid';
+
+const stateInicial = { 
+    cita: {
+        mascota: "",
+        propietario: "",
+        fecha: "",
+        hora: "",
+        sintomas: ""
+    },
+    error: false}
 
 class NuevaCita extends Component {
-    state = {
-        cita: {
-            mascota: "",
-            propietario: "",
-            fecha: "",
-            hora: "",
-            sintomas: ""
-        }
+    state = { 
+        ...stateInicial    
     };
 
+    // cuando se escribe en el formulario
     handleChange = e => {
         console.log(e.target.name + ":" + e.target.value);
         // colocar lo que el usuario escribe en el state
@@ -22,16 +28,57 @@ class NuevaCita extends Component {
             }
         });
     };
+
+    // cuando se envia el formulario
+    handleSubmit = e => {
+        e.preventDefault();
+
+        const { mascota, propietario, fecha, hora, sintomas } = this.state.cita;
+
+        // validar que todos los campos esten llenos
+
+        if (
+            mascota === "" ||
+            mascota.length === 0 ||
+            propietario === "" ||
+            propietario.length === 0 ||
+            fecha === "" ||
+            fecha.length === 0 ||
+            hora === "" ||
+            hora.length === 0 ||
+            sintomas === "" ||
+            sintomas.length === 0
+        ) {
+            this.setState({ error: true });
+            return;
+        }else {
+            this.setState({ error: false });
+        }
+
+        // Generar objeto con los datos
+        const nuevaCita = {...this.state.cita};
+        nuevaCita.id = uuid();
+
+        this.props.crearNuevaCita(nuevaCita);
+
+        // Colocar en el state el state incial
+        this.setState({...stateInicial})
+    };
     render() {
+
+        // extraer valor del state
+        const {error} = this.state;
+
         return (
             <div className="card mt-5 py-5">
                 <div className="card-body">
-                    <h2 className="card-title text-center mb-5">
+                    <h2 className="card-title text-center mb-3">
                         Llene el formulario para crear una nueva cita
                     </h2>
+                    {error ? <div className="alert alert-danger text-center">Todoas los campos son obligatorios</div> : null}
                 </div>
                 <div className="p-4">
-                    <form>
+                    <form onSubmit={this.handleSubmit}>
                         {/* Abrimos formGroup */}
                         <div className="form-group row">
                             <label className="col-sm-4 col-lg-4 col-form-label text-right">
@@ -114,7 +161,7 @@ class NuevaCita extends Component {
                         </div>
                         {/* Cerramos formGroup */}
                         <input
-                            type="button"
+                            type="submit"
                             className="py-3 mt-2 btn btn-success btn-block"
                             value="Agregar Nueva Cita"
                         />
