@@ -18,7 +18,7 @@ class NuevaCita extends Component {
 
     // cuando se escribe en el formulario
     handleChange = e => {
-        console.log(e.target.name + ":" + e.target.value);
+        // console.log(e.target.name + ":" + e.target.value);
         // colocar lo que el usuario escribe en el state
 
         this.setState({
